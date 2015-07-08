@@ -1,0 +1,22 @@
+#!/bin/bash
+
+sh=/bin/bash
+
+usage() {
+	echo "usage: $0 revision..range /path/to/archive.tgz [ prefix ]"
+}
+
+[ "$1" == "-h" ] && { usage; exit 1; }
+[ $# -ge 2 ] && [ $# -le 3 ] || { usage; exit 1; }
+
+getfiles=$(dirname $0)/getfiles
+revs=$1
+arch=$2
+prefix=${3%/}
+
+if [ $# -eq 3 ]; then
+  tar -czf "$arch" --transform "s,^,$prefix/," $($sh $getfiles $revs)
+else
+  tar -czf "$arch" $($sh $getfiles $revs)
+fi
+

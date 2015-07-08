@@ -1,0 +1,16 @@
+#!/bin/bash
+
+sh=/bin/bash
+
+usage() {
+	echo "usage: $0 revision..range"
+}
+
+[ "$1" == "-h" ] && { usage; exit 1; }
+[ $# -ge 0 ] && [ $# -le 1 ] || { usage; exit 1; }
+
+getfiles=$(dirname $0)/getfiles
+revs=$1
+
+$sh $getfiles $revs | sed -r 's/^.*$/| grep -z -v "^&$" \\/;1s/^/git filter-branch --prune-empty --index-filter '\''git ls-tree -z -r --name-only --full-tree $GIT_COMMIT /;$s/$/\n| xargs -0 -r git rm --cached -r'\'' -- --all/' | $sh
+

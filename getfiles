@@ -1,0 +1,11 @@
+#!/bin/bash
+
+usage() {
+	echo "usage: $0 revision..range"
+}
+
+[ "$1" == "-h" ] && { usage; exit 1; }
+[ $# -ge 0 ] && [ $# -le 1 ] || { usage; exit 1; }
+
+git log --name-only --pretty="format:" $1 | grep -v '^$' | sort -u
+
